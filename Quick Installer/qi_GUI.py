@@ -9,9 +9,12 @@ class MainWindow(GridLayout):
         
         
 
+
+
+
+
 class QuickInstall(App):
     def build(self):
-        
         return MainWindow()
 
 
