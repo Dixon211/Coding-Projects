@@ -1,6 +1,8 @@
 import sys
 import sqlite3
-import kivy
+from kivy.app import App
+from kivy.uix.label import Label
+from kivy.uix.gridlayout import GridLayout
 
 #create Sql database
 p_list = sqlite3.connect('programs_to_install')
