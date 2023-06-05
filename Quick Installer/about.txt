@@ -1,0 +1,21 @@
+6/4 made the GUI
+
+Working on the file explorer to get the metadata needed for the programs(name, binary data, file extension)
+    attached to click on the "add add_prgm_but"
+    using the filechooser to choose the correct installer
+    break down metadata from the file
+    have the metadata moved to the SQLdb that is created in quick_install.py
+    *don't add more work to this, see the moving of this metadata as one function. We will make another one to pull it to the left side.
+
+
+
+
+
+Current pip modules:
+from kivy.app import App
+from kivy.uix.label import Label
+from kivy.uix.button import Button
+from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.filechooser import FileChooserListView
+from kivy.uix.popup import Popup
+import subprocess
