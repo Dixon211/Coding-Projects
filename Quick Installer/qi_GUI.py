@@ -7,12 +7,13 @@ from kivy.uix.popup import Popup
 import subprocess
 import os
 import sqlite3
-import time
+
+
 
 def create_DB():
     #create Sql database
-    p_list = sqlite3.connect('programs_to_install.db')
-    db = p_list.cursor()
+    conn = sqlite3.connect('programs_to_install.db')
+    db = conn.cursor()
 
     #create table with 3 columns file_name, binary, and file_type in database
     db.execute('''
@@ -20,13 +21,36 @@ def create_DB():
             ([file_name] TEXT PRIMARY KEY,
             [binary] BLOB)
             ''')
+    conn.close()
 
+
+def move_DBinfo():
+    conn = sqlite3.connect('programs_to_install.db')
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM software_values")
+    rows = cursor.fetchall()
+    for row in rows:
+        column1_value = row[0]
+        app_names.append(column1_value)
+    conn.close()  
+    
+            
 class LeftBox(BoxLayout):
-    def __init__(self, **kwargs):
+    def __init__(self, app_names, **kwargs):
         super().__init__(**kwargs)
-        label = Label(text="Hello, World!")
-        self.add_widget(label)
+        self.app_names=app_names
+        self.app_list = BoxLayout(orientation="horizontal")
+        self.add_widget(self.app_list)
+        self.buttons = {}
+        self.create_buttons()
         
+    def create_buttons(self): #creates button and adds to dictionary to reference later
+        for app in self.app_names:
+            app_button = Button(text=app, background_color="#1c305c")
+            self.buttons[app] = app_button
+            self.app_list.add_widget(app_button)
+            
+               
 class RightBox(BoxLayout):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -44,6 +68,7 @@ class RightBox(BoxLayout):
     def open_file_explor(self, *args):
         file_explorer = File_Explorer()
         file_explorer.open()
+
 
 class File_Explorer(Popup):
     def __init__(self, **kwargs):
@@ -105,11 +130,12 @@ class File_Explorer(Popup):
 
         self.title = "File added!"
 
+
 class MyApp(App):
     def build(self):
         self.title="Quick Install"
         main_box = BoxLayout(orientation="horizontal")
-        left_half=LeftBox()
+        left_half=LeftBox(app_names)
         right_half=RightBox(orientation="vertical")
         main_box.add_widget(left_half)
         main_box.add_widget(right_half)
@@ -117,5 +143,7 @@ class MyApp(App):
 
 
 if __name__ == "__main__":
+    app_names = []
     create_DB()
+    move_DBinfo()
     MyApp().run()
