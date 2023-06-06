@@ -4,6 +4,7 @@ from kivy.uix.button import Button
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.filechooser import FileChooserListView
 from kivy.uix.popup import Popup
+from kivy.uix.checkbox import CheckBox
 import subprocess
 import os
 import sqlite3
@@ -39,16 +40,31 @@ class LeftBox(BoxLayout):
     def __init__(self, app_names, **kwargs):
         super().__init__(**kwargs)
         self.app_names=app_names
-        self.app_list = BoxLayout(orientation="horizontal")
+        self.app_list = BoxLayout(orientation="vertical")
         self.add_widget(self.app_list)
-        self.buttons = {}
-        self.create_buttons()
-        
-    def create_buttons(self): #creates button and adds to dictionary to reference later
+        self.tiles = []
         for app in self.app_names:
-            app_button = Button(text=app, background_color="#1c305c")
-            self.buttons[app] = app_button
-            self.app_list.add_widget(app_button)
+            tile = App_Tiles(app)
+            self.tiles.append(tile)
+            self.app_list.add_widget(tile)
+ 
+            
+            
+class App_Tiles(BoxLayout):
+    def __init__(self, app, **kwargs):
+        super().__init__(**kwargs)
+        self.app = app
+        self.orientation="horizontal"
+        
+        self.app_title = Label(text=self.app)
+        self.add_widget(self.app_title)
+        
+        self.app_checkbox= CheckBox()
+        self.add_widget(self.app_checkbox)
+        
+        
+            
+        
             
                
 class RightBox(BoxLayout):
