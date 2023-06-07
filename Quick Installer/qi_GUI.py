@@ -5,6 +5,7 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.filechooser import FileChooserListView
 from kivy.uix.popup import Popup
 from kivy.uix.checkbox import CheckBox
+from kivy.uix.togglebutton import ToggleButton
 import subprocess
 import os
 import sqlite3
@@ -40,27 +41,34 @@ class LeftBox(BoxLayout):
     def __init__(self, app_names, **kwargs):
         super().__init__(**kwargs)
         self.app_names=app_names
-        self.app_list = BoxLayout(orientation="vertical")
-        self.add_widget(self.app_list)
+        self.orientation="vertical"
         self.tiles = []
+        self.activated_tiles=[]
+        
+        settings = BoxLayout(orientation="horizontal")
+        self.add_widget(settings)
+        
+        delete_btn = Button(text="delete")
+        settings.add_widget(delete_btn)
+        run_btn=Button(text="Run selected")
+        settings.add_widget(run_btn)
+        
+        
         for app in self.app_names:
             tile = App_Tiles(app)
             self.tiles.append(tile)
-            self.app_list.add_widget(tile)
- 
+            self.add_widget(tile)
+        
+        
+        
             
-            
-class App_Tiles(BoxLayout):
+class App_Tiles(ToggleButton):
     def __init__(self, app, **kwargs):
         super().__init__(**kwargs)
         self.app = app
-        self.orientation="horizontal"
+        self.text = app
+        self.background_color = "#003d80"
         
-        self.app_title = Label(text=self.app)
-        self.add_widget(self.app_title)
-        
-        self.app_checkbox= CheckBox()
-        self.add_widget(self.app_checkbox)
         
         
             
